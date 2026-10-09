@@ -1,0 +1,211 @@
+<!doctype html><html lang=en-us class=scroll-smooth x-data=themeToggle><head><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><meta name=color-scheme content="light dark"><title>How to Deploy a Private Hugo Site to GitHub Pages | Adriel's Portfolio</title><script src=/js/theme-scheme.728cc794b20914082a57bfe51ceb73a14cff2437c23c5c0ee3c2f0db88906d94.js integrity="sha256-cozHlLIJFAgqV7/lHOtzoUz/JDfCPFwO48Lw24iQbZQ=" crossorigin=anonymous></script><link rel=stylesheet href=/css/main.86b9f40b6a0e0cc98c6767ea21fa5c7d27d478be75fdd1663c678f2e48030283.css integrity="sha256-hrn0C2oODMmMZ2fqIfpcfSfUeL51/dFmPGePLkgDAoM=" crossorigin=anonymous><link rel=stylesheet href=/css/custom.788d962f2669d2a317c4f054971b04730b4ef89d23a3e83741158819b997ad4b.css integrity="sha256-eI2WLyZp0qMXxPBUlxsEcwtO+J0jo+g3QRWIGbmXrUs=" crossorigin=anonymous><script src=/js/main.cb27074bf61345f2470e300a818c52a4f5abc2df62e62c7552f097a1ec1d8359.js integrity="sha256-yycHS/YTRfJHDjAKgYxSpPWrwt9i5ix1UvCXoewdg1k=" crossorigin=anonymous defer></script></head><body class="min-h-screen bg-background text-foreground"><a class=nerdy-skip-link href=#main-content>Skip to main content</a><div class="fixed right-4 top-4 z-[80] sm:right-6 lg:right-8"><button class="nerdy-icon-button shadow-xl shadow-slate-300/30 backdrop-blur-md ring-1 ring-slate-900/5 dark:shadow-black/30 dark:ring-white/10" type=button aria-label="Toggle theme" aria-pressed=false x-on:click=toggle() x-bind:aria-pressed=dark.toString() x-bind:aria-label="dark ? 'Switch to light mode' : 'Switch to dark mode'">
+<span x-show=dark x-cloak><svg class="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003.0 0012 21a9.003 9.003.0 008.354-5.646z"/></svg>
+</span><span x-show=!dark x-cloak><svg class="h-4 w-4" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2m0 14v2m9-9h-2M5 12H3m15.364-6.364L16.95 7.05m-9.9 9.9-1.414 1.414m12.728.0-1.414-1.414m-9.9-9.9L5.636 5.636M12 8a4 4 0 100 8 4 4 0 000-8z"/></svg></span></button></div><main id=main-content tabindex=-1 class=w-full><div class="nerdy-page-surface nerdy-page-surface--post"><div class=nerdy-ambient-bg></div><div class="nerdy-top-glow max-w-3xl"></div><div class="nerdy-container pt-6"><header class="mb-8 border-b border-slate-300/70 pb-6 dark:border-slate-700"><div class=min-w-0><div class="mb-2 flex flex-wrap items-center gap-1 font-mono text-xs nerdy-muted-soft md:text-sm"><a class="nerdy-muted transition-colors hover:text-slate-950 hover:underline dark:hover:text-white" href=/>adriel@portfolio</a><span>:</span><a class="text-accent-cyan transition-colors hover:underline" href=/posts/>~/posts</a><span>/</span><span class=text-accent-purple>How to</span><span>/</span><a class="text-accent-amber transition-colors hover:underline" href=/posts/#subject-how-to-topic-hugo>Hugo</a></div><h1 class="text-2xl font-bold tracking-tight text-slate-950 dark:text-white md:text-4xl">How to Deploy a Private Hugo Site to GitHub Pages</h1><div class="mt-6 flex flex-wrap items-center gap-x-4 gap-y-2 font-mono text-xs nerdy-muted"><div class="flex items-center gap-2"><svg class="h-4 w-4 text-slate-600 dark:text-slate-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3A9 9 0 113 12a9 9 0 0118 0z"/></svg>
+<time datetime=2026-10-09>2026-10-09</time></div><span class="hidden text-slate-400 dark:text-slate-600 md:block">|</span><div class="flex items-center gap-2"><svg class="h-4 w-4 text-slate-600 dark:text-slate-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6"/></svg>
+<span>7 min read</span></div><span class="hidden text-slate-400 dark:text-slate-600 md:block">|</span><div class="flex flex-wrap gap-2"><span class="nerdy-chip nerdy-chip-cyan">#hugo</span>
+<span class="nerdy-chip nerdy-chip-cyan">#github-pages</span>
+<span class="nerdy-chip nerdy-chip-cyan">#github-actions</span>
+<span class="nerdy-chip nerdy-chip-cyan">#deployment</span></div></div></div></header></div><div class="nerdy-container grid grid-cols-1 items-start gap-8 lg:grid-cols-12" x-data="{ expandedSubject: &#34;how-to&#34;, openSubject(id) { this.expandedSubject = this.expandedSubject === id ? '' : id } }"><aside class="nerdy-sticky-sidebar lg:sticky lg:top-6 lg:col-span-3" x-data="{ workspaceOpen: false }"><div class=nerdy-sticky-sidebar-card><button class="mb-0 flex w-full items-center justify-between gap-3 px-2 font-mono text-[10px] font-bold uppercase tracking-widest nerdy-muted-soft transition-colors hover:text-slate-950 dark:hover:text-white lg:mb-4 lg:cursor-default lg:hover:text-inherit dark:lg:hover:text-inherit" type=button x-on:click="workspaceOpen = !workspaceOpen" x-bind:aria-expanded="(workspaceOpen || window.matchMedia('(min-width: 1024px)').matches).toString()" aria-controls=workspace-explorer-nav>
+<span>~/WORKSPACE_EXPLORER</span>
+<svg class="h-4 w-4 shrink-0 transition-transform lg:hidden" x-bind:class="workspaceOpen ? 'rotate-0' : '-rotate-90'" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg></button><nav id=workspace-explorer-nav class="mt-4 space-y-4 lg:mt-0" x-bind:class="workspaceOpen ? 'block' : 'hidden lg:block'"><div><button class=post-sidebar-subject type=button aria-expanded=false aria-controls=workspace-subject-profile x-on:click='openSubject("profile")' x-bind:aria-expanded='expandedSubject === "profile"'>
+<svg class="post-sidebar-subject-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+<svg class="h-5 w-5 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5A2 2 0 003 7z"/></svg>
+<span>Profile</span>
+<span class=post-sidebar-subject-count>1</span></button><div id=workspace-subject-profile class="ml-4 mt-1 space-y-1 border-l border-slate-300/80 pl-3 dark:border-slate-700/60" x-show='expandedSubject === "profile"' x-cloak><a class="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left font-mono text-xs nerdy-muted transition-colors hover:bg-slate-100/80 hover:text-slate-950 dark:hover:bg-slate-800/50 dark:hover:text-white" href=/posts/#subject-profile-topic-about-me data-topic-id=subject-profile-topic-about-me data-subject-id=profile data-subject-label=Profile data-topic-label="About me"><span class="text-slate-400 dark:text-slate-600">└─</span>
+<svg class="h-3.5 w-3.5 shrink-0 text-slate-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6"/></svg>
+<span>About me</span>
+<span class="ml-auto text-[10px] text-slate-400 dark:text-slate-600">1</span></a></div></div><div><button class=post-sidebar-subject type=button aria-expanded=true aria-controls=workspace-subject-how-to x-on:click='openSubject("how-to")' x-bind:aria-expanded='expandedSubject === "how-to"'>
+<svg class="post-sidebar-subject-chevron" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+<svg class="h-5 w-5 shrink-0" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5A2 2 0 003 7z"/></svg>
+<span>How to</span>
+<span class=post-sidebar-subject-count>1</span></button><div id=workspace-subject-how-to class="ml-4 mt-1 space-y-1 border-l border-slate-300/80 pl-3 dark:border-slate-700/60" x-show='expandedSubject === "how-to"'><a class="flex w-full items-center gap-2.5 rounded-lg px-2 py-1.5 text-left font-mono text-xs nerdy-muted transition-colors hover:bg-slate-100/80 hover:text-slate-950 dark:hover:bg-slate-800/50 dark:hover:text-white" href=/posts/#subject-how-to-topic-hugo data-topic-id=subject-how-to-topic-hugo data-subject-id=how-to data-subject-label="How to" data-topic-label=Hugo><span class="text-slate-400 dark:text-slate-600">└─</span>
+<svg class="h-3.5 w-3.5 shrink-0 text-slate-500" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10l6 6v10a2 2 0 01-2 2z"/><path stroke-linecap="round" stroke-linejoin="round" d="M14 4v6h6"/></svg>
+<span>Hugo</span>
+<span class="ml-auto text-[10px] text-slate-400 dark:text-slate-600">1</span></a></div></div></nav></div></aside><main class="min-w-0 lg:col-span-9"><article class="nerdy-prose prose prose-slate max-w-none dark:prose-invert"><p>GitHub Pages can serve a public site without making its source repository
+public. A GitHub Actions workflow in the private repository builds the Hugo
+site, then pushes only the generated <code>public/</code> directory to a separate public
+repository.</p><p>This guide publishes the private <code>vincensiusadriel/portfolio</code> repository to the
+public <code>vincensiusadriel/vincensiusadriel.github.io</code> repository. The resulting
+site is available at <a href=https://vincensiusadriel.github.io/>https://vincensiusadriel.github.io/</a>.</p><p>The deployment has three parts:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>private Hugo repository
+</span></span><span style=display:flex><span>        |
+</span></span><span style=display:flex><span>        | GitHub Actions builds the site
+</span></span><span style=display:flex><span>        v
+</span></span><span style=display:flex><span>public vincensiusadriel.github.io repository
+</span></span><span style=display:flex><span>        |
+</span></span><span style=display:flex><span>        | GitHub Pages publishes main
+</span></span><span style=display:flex><span>        v
+</span></span><span style=display:flex><span>https://vincensiusadriel.github.io/
+</span></span></code></pre></div><p>The source content, templates, configuration, and history remain private. The
+generated HTML, CSS, JavaScript, images, and other files required by the site
+are public.</p><h2 id=prerequisites>Prerequisites</h2><p>Before starting, make sure you have:</p><ul><li>A Hugo site in a private GitHub repository.</li><li>Permission to manage Actions secrets in the private repository.</li><li>Permission to create and configure the public publishing repository.</li><li>A production build that works locally.</li><li>Git, Hugo Extended, Go, Node.js, and npm when required by the theme.</li></ul><p>This portfolio uses the <code>nerdy</code> theme as the <code>themes/nerdy</code> Git submodule. Its
+Tailwind CSS pipeline requires npm dependencies and a two-pass Hugo build.</p><h2 id=set-the-production-url>Set the production URL</h2><p>A GitHub user site must use a public repository named exactly
+<code>&lt;username>.github.io</code>. Set the Hugo <code>baseURL</code> to the corresponding root URL,
+including the trailing slash:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>baseURL</span>: <span style=color:#e6db74>&#34;https://vincensiusadriel.github.io/&#34;</span>
+</span></span></code></pre></div><p>This is different from a project site URL such as
+<code>https://vincensiusadriel.github.io/portfolio/</code>. Using the old project path
+would generate incorrect canonical URLs and asset links after moving the site
+to the domain root.</p><h2 id=create-the-public-repository>Create the public repository</h2><p>Create a public GitHub repository named:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-text data-lang=text><span style=display:flex><span>vincensiusadriel/vincensiusadriel.github.io
+</span></span></code></pre></div><p>Keep this repository dedicated to generated output. It does not need a README,
+license, or <code>.gitignore</code>; the deployment workflow creates and replaces its
+<code>main</code> branch.</p><p>Do not add source content or secrets to this repository. Everything committed
+to it can be read by anyone.</p><h2 id=create-a-deployment-key>Create a deployment key</h2><p>The private repository&rsquo;s <code>GITHUB_TOKEN</code> is scoped to that repository and cannot
+push to a different repository. Use a dedicated SSH deploy key that grants
+write access only to the public publishing repository.</p><p>Generate an Ed25519 key pair outside the project directory:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sh data-lang=sh><span style=display:flex><span>ssh-keygen -t ed25519 <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -C <span style=color:#e6db74>&#34;portfolio GitHub Pages deployment&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -f <span style=color:#e6db74>&#34;</span>$HOME<span style=color:#e6db74>/.ssh/portfolio-pages-deploy&#34;</span> <span style=color:#ae81ff>\
+</span></span></span><span style=display:flex><span>  -N <span style=color:#e6db74>&#34;&#34;</span>
+</span></span></code></pre></div><p>This creates:</p><ul><li><code>$HOME/.ssh/portfolio-pages-deploy</code>: the private key.</li><li><code>$HOME/.ssh/portfolio-pages-deploy.pub</code>: the public key.</li></ul><p>Never commit either key to the source or publishing repository.</p><h3 id=add-the-public-key-to-the-publishing-repository>Add the public key to the publishing repository</h3><p>Open <code>vincensiusadriel/vincensiusadriel.github.io</code> on GitHub, then:</p><ol><li>Select <strong>Settings</strong>.</li><li>Select <strong>Deploy keys</strong> under <strong>Security</strong>.</li><li>Select <strong>Add deploy key</strong>.</li><li>Enter <code>portfolio-pages</code> as the title.</li><li>Use the contents of <code>$HOME/.ssh/portfolio-pages-deploy.pub</code> as the key.</li><li>Enable <strong>Allow write access</strong>.</li><li>Select <strong>Add key</strong>.</li></ol><p>The key can now push to this repository, but it cannot access other
+repositories in the account.</p><h3 id=add-the-private-key-to-the-source-repository>Add the private key to the source repository</h3><p>Open the private <code>vincensiusadriel/portfolio</code> repository on GitHub, then:</p><ol><li>Select <strong>Settings</strong>.</li><li>Select <strong>Secrets and variables</strong>, then <strong>Actions</strong>.</li><li>Select <strong>New repository secret</strong>.</li><li>Set the name to <code>ACTIONS_DEPLOY_KEY</code>.</li><li>Use the complete contents of <code>$HOME/.ssh/portfolio-pages-deploy</code> as the
+secret value, including the <code>BEGIN</code> and <code>END</code> lines.</li><li>Select <strong>Add secret</strong>.</li></ol><p>GitHub masks the secret in workflow logs. The workflow passes it only to the
+publishing action.</p><h2 id=add-the-publishing-workflow>Add the publishing workflow</h2><p>Create <code>.github/workflows/pages.yml</code> in the private source repository:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>name</span>: <span style=color:#ae81ff>Publish Hugo site</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>on</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>push</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>branches</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#ae81ff>master</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>workflow_dispatch</span>:
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>permissions</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>contents</span>: <span style=color:#ae81ff>read</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>concurrency</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>group</span>: <span style=color:#ae81ff>publish-site</span>
+</span></span><span style=display:flex><span>  <span style=color:#f92672>cancel-in-progress</span>: <span style=color:#66d9ef>false</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span><span style=color:#f92672>jobs</span>:
+</span></span><span style=display:flex><span>  <span style=color:#f92672>publish</span>:
+</span></span><span style=display:flex><span>    <span style=color:#f92672>runs-on</span>: <span style=color:#ae81ff>ubuntu-latest</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>    <span style=color:#f92672>steps</span>:
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Check out repository</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/checkout@v4</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>submodules</span>: <span style=color:#ae81ff>recursive</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Set up Go</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/setup-go@v5</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>go-version-file</span>: <span style=color:#ae81ff>themes/nerdy/go.mod</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Set up Hugo</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-hugo@v3</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>hugo-version</span>: <span style=color:#e6db74>&#34;0.167.0&#34;</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>extended</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Set up Node.js</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>actions/setup-node@v4</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>node-version</span>: <span style=color:#ae81ff>24</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>cache</span>: <span style=color:#ae81ff>npm</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Generate Hugo npm workspace</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>hugo mod npm pack</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Install npm dependencies</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: <span style=color:#ae81ff>npm ci</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Build site</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>env</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>HUGO_ENVIRONMENT</span>: <span style=color:#ae81ff>production</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>run</span>: |<span style=color:#e6db74>
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          export PATH=&#34;$PWD/node_modules/.bin:$PATH&#34;
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo --renderToMemory
+</span></span></span><span style=display:flex><span><span style=color:#e6db74>          hugo --gc --minify --cleanDestinationDir</span>
+</span></span><span style=display:flex><span>
+</span></span><span style=display:flex><span>      - <span style=color:#f92672>name</span>: <span style=color:#ae81ff>Publish generated site</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>uses</span>: <span style=color:#ae81ff>peaceiris/actions-gh-pages@84c30a85c19949d7eee79c4ff27748b70285e453</span> <span style=color:#75715e># v4.1.0</span>
+</span></span><span style=display:flex><span>        <span style=color:#f92672>with</span>:
+</span></span><span style=display:flex><span>          <span style=color:#f92672>deploy_key</span>: <span style=color:#ae81ff>${{ secrets.ACTIONS_DEPLOY_KEY }}</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>external_repository</span>: <span style=color:#ae81ff>vincensiusadriel/vincensiusadriel.github.io</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>publish_branch</span>: <span style=color:#ae81ff>main</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>publish_dir</span>: <span style=color:#ae81ff>./public</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>force_orphan</span>: <span style=color:#66d9ef>true</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>full_commit_message</span>: <span style=color:#ae81ff>Publish generated site</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>user_name</span>: <span style=color:#ae81ff>github-actions[bot]</span>
+</span></span><span style=display:flex><span>          <span style=color:#f92672>user_email</span>: <span style=color:#ae81ff>41898282</span><span style=color:#ae81ff>+github-actions[bot]@users.noreply.github.com</span>
+</span></span></code></pre></div><p>If the source repository uses <code>main</code> as its default branch, replace <code>master</code> in
+the workflow trigger.</p><p>The workflow performs these tasks:</p><ol><li>Checks out the private source and its theme submodule.</li><li>Installs the Go, Hugo Extended, and Node.js versions required by the site.</li><li>Generates the ignored <code>packages/hugoautogen</code> npm workspace.</li><li>Installs locked npm dependencies with <code>npm ci</code>.</li><li>Runs Hugo in memory to generate <code>hugo_stats.json</code> for Tailwind CSS.</li><li>Runs the minified production build and writes it to <code>public/</code>.</li><li>Pushes only <code>public/</code> to the public repository&rsquo;s <code>main</code> branch.</li></ol><p>The publishing action is pinned to the commit for version <code>4.1.0</code> because it
+receives the private deployment key. Review and deliberately update the pinned
+commit when upgrading the action.</p><p><code>force_orphan: true</code> keeps only the latest generated snapshot in the public
+branch. This prevents removed pages from remaining available in Git history.
+<code>full_commit_message</code> also prevents a private source commit message or commit
+hash from appearing in the public repository.</p><h2 id=run-the-first-deployment>Run the first deployment</h2><p>Commit and push the workflow to <code>master</code>, or run it manually:</p><ol><li>Open the private repository on GitHub.</li><li>Select <strong>Actions</strong>.</li><li>Select <strong>Publish Hugo site</strong>.</li><li>Select <strong>Run workflow</strong>.</li><li>Wait for the <code>publish</code> job to finish.</li></ol><p>The first successful run creates the <code>main</code> branch in
+<code>vincensiusadriel/vincensiusadriel.github.io</code> and commits the generated site.</p><h2 id=enable-github-pages>Enable GitHub Pages</h2><p>After the first deployment creates <code>main</code>, configure the public repository:</p><ol><li>Open <code>vincensiusadriel/vincensiusadriel.github.io</code> on GitHub.</li><li>Select <strong>Settings</strong>.</li><li>Select <strong>Pages</strong> under <strong>Code and automation</strong>.</li><li>Set <strong>Source</strong> to <strong>Deploy from a branch</strong>.</li><li>Select the <code>main</code> branch and <code>/(root)</code> folder.</li><li>Select <strong>Save</strong>.</li></ol><p>Wait for GitHub Pages to finish publishing, then open:</p><p><a href=https://vincensiusadriel.github.io/>https://vincensiusadriel.github.io/</a></p><p>Every later push to <code>master</code> builds and publishes a new snapshot. A workflow
+dispatch can publish the current source again without creating a new commit in
+the private repository.</p><h2 id=test-the-production-build-locally>Test the production build locally</h2><p>Run the same essential build steps before pushing:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sh data-lang=sh><span style=display:flex><span>git submodule update --init --recursive
+</span></span><span style=display:flex><span>hugo mod npm pack
+</span></span><span style=display:flex><span>npm ci
+</span></span><span style=display:flex><span>export PATH<span style=color:#f92672>=</span><span style=color:#e6db74>&#34;</span>$PWD<span style=color:#e6db74>/node_modules/.bin:</span>$PATH<span style=color:#e6db74>&#34;</span>
+</span></span><span style=display:flex><span>export HUGO_ENVIRONMENT<span style=color:#f92672>=</span>production
+</span></span><span style=display:flex><span>hugo --renderToMemory
+</span></span><span style=display:flex><span>hugo --gc --minify --cleanDestinationDir
+</span></span></code></pre></div><p>Serve the generated directory to inspect it in a browser:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-sh data-lang=sh><span style=display:flex><span>python3 -m http.server <span style=color:#ae81ff>8080</span> --directory public
+</span></span></code></pre></div><p>Then open <a href=http://localhost:8080/>http://localhost:8080/</a>. Check links, images, styles, scripts,
+canonical URLs, and the sitemap before publishing.</p><p>The deployment command intentionally omits <code>--buildDrafts</code>. Content with
+<code>draft: true</code> remains available during local development but is excluded from
+the public site.</p><h2 id=protect-private-information>Protect private information</h2><p>Keeping the source repository private does not make generated content private.
+Before deploying, review anything Hugo can copy or render, including:</p><ul><li>Published Markdown content and front matter.</li><li>Files under <code>static/</code> and other mounted static directories.</li><li>Images and downloadable documents.</li><li>Data files used by templates.</li><li>Values embedded into generated JavaScript, HTML, or source maps.</li></ul><p>Do not pass credentials to Hugo or store them in content. Repository secrets
+should be used only by the workflow steps that need them.</p><p>The generated repository is disposable output. Do not edit it manually because
+the next deployment replaces its branch. Keep all authored content and
+configuration in the private source repository.</p><h2 id=rotate-or-revoke-the-deployment-key>Rotate or revoke the deployment key</h2><p>If the private key is exposed, remove its deploy key from the public repository
+immediately. Generate a new key pair, add the new public key with write access,
+and replace the <code>ACTIONS_DEPLOY_KEY</code> secret in the private repository.</p><p>Deleting the Actions secret stops future deployments but does not revoke a key
+that has been copied elsewhere. Remove the deploy key from the public repository
+to revoke it completely.</p><h2 id=troubleshooting>Troubleshooting</h2><h3 id=the-workflow-reports-permission-denied-publickey>The workflow reports <code>Permission denied (publickey)</code></h3><p>Confirm that <code>ACTIONS_DEPLOY_KEY</code> contains the complete private key and that the
+matching public key is attached to the publishing repository with
+<strong>Allow write access</strong> enabled. Preserve all key line breaks when creating the
+secret.</p><h3 id=the-workflow-reports-repository-not-found>The workflow reports <code>Repository not found</code></h3><p>Confirm that <code>external_repository</code> exactly matches the public repository owner
+and name:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>external_repository</span>: <span style=color:#ae81ff>vincensiusadriel/vincensiusadriel.github.io</span>
+</span></span></code></pre></div><p>Also confirm that the public repository already exists. The workflow creates
+the publishing branch, not the repository itself.</p><h3 id=the-workflow-cannot-check-out-the-theme>The workflow cannot check out the theme</h3><p>Confirm that <code>.gitmodules</code> uses an accessible HTTPS URL and that the checkout
+step includes <code>submodules: recursive</code>. A private theme repository requires
+separate credentials with access to both private repositories.</p><h3 id=the-page-loads-without-styling>The page loads without styling</h3><p>Confirm that <code>npm ci</code> succeeds, <code>node_modules/.bin</code> is on <code>PATH</code>, and both Hugo
+passes run. The first pass generates the build statistics Tailwind needs to
+discover classes used by Hugo templates.</p><p>Also verify that <code>baseURL</code> points to the domain root:</p><div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-text-size-adjust:none><code class=language-yaml data-lang=yaml><span style=display:flex><span><span style=color:#f92672>baseURL</span>: <span style=color:#e6db74>&#34;https://vincensiusadriel.github.io/&#34;</span>
+</span></span></code></pre></div><h3 id=github-pages-returns-404>GitHub Pages returns 404</h3><p>Check that the public repository contains generated files on <code>main</code>. In its
+Pages settings, confirm that the source is <strong>Deploy from a branch</strong> with <code>main</code>
+and <code>/(root)</code> selected. The first publication can take a few minutes.</p><h3 id=a-deployment-does-not-create-a-new-public-commit>A deployment does not create a new public commit</h3><p>The publishing action skips a commit when the generated output has not changed.
+This is expected and does not indicate a failed deployment.</p><h3 id=a-draft-post-is-missing>A draft post is missing</h3><p>Drafts are intentionally excluded from production. Remove <code>draft: true</code>, or
+change it to <code>draft: false</code>, then commit and push the source again.</p></article><nav class="mt-16 grid gap-4 border-t border-slate-200 pt-8 dark:border-slate-700 md:grid-cols-2" aria-label="Post navigation"><a class="group nerdy-nav-card" href=/posts/profile/about_me/about_me/><div class="mb-2 flex items-center gap-2 font-mono text-xs text-accent-cyan"><span class="transition-transform group-hover:-translate-x-1">&lt;-</span>
+<span>Previous Post</span></div><div class="font-bold leading-snug text-slate-950 dark:text-slate-100">About me</div></a></nav></main></div><aside class="fixed right-8 top-[30%] z-50 hidden xl:block"><nav class="toc-card group" aria-label="Table of contents"><div class=toc-heading aria-hidden=true><span class=toc-bar aria-hidden=true></span>
+<span class=toc-label>ON THIS PAGE</span></div><a class=toc-link href=#prerequisites data-toc-link data-target=prerequisites><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Prerequisites</span>
+</a><a class=toc-link href=#set-the-production-url data-toc-link data-target=set-the-production-url><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Set the production URL</span>
+</a><a class=toc-link href=#create-the-public-repository data-toc-link data-target=create-the-public-repository><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Create the public repository</span>
+</a><a class=toc-link href=#create-a-deployment-key data-toc-link data-target=create-a-deployment-key><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Create a deployment key</span>
+</a><a class="toc-link toc-link--child" href=#add-the-public-key-to-the-publishing-repository data-toc-link data-target=add-the-public-key-to-the-publishing-repository><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Add the public key to the publishing repository</span>
+</a><a class="toc-link toc-link--child" href=#add-the-private-key-to-the-source-repository data-toc-link data-target=add-the-private-key-to-the-source-repository><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Add the private key to the source repository</span>
+</a><a class=toc-link href=#add-the-publishing-workflow data-toc-link data-target=add-the-publishing-workflow><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Add the publishing workflow</span>
+</a><a class=toc-link href=#run-the-first-deployment data-toc-link data-target=run-the-first-deployment><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Run the first deployment</span>
+</a><a class=toc-link href=#enable-github-pages data-toc-link data-target=enable-github-pages><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Enable GitHub Pages</span>
+</a><a class=toc-link href=#test-the-production-build-locally data-toc-link data-target=test-the-production-build-locally><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Test the production build locally</span>
+</a><a class=toc-link href=#protect-private-information data-toc-link data-target=protect-private-information><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Protect private information</span>
+</a><a class=toc-link href=#rotate-or-revoke-the-deployment-key data-toc-link data-target=rotate-or-revoke-the-deployment-key><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Rotate or revoke the deployment key</span>
+</a><a class=toc-link href=#troubleshooting data-toc-link data-target=troubleshooting><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>Troubleshooting</span>
+</a><a class="toc-link toc-link--child" href=#the-workflow-reports-permission-denied-publickey data-toc-link data-target=the-workflow-reports-permission-denied-publickey><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>The workflow reports Permission denied (publickey)</span>
+</a><a class="toc-link toc-link--child" href=#the-workflow-reports-repository-not-found data-toc-link data-target=the-workflow-reports-repository-not-found><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>The workflow reports Repository not found</span>
+</a><a class="toc-link toc-link--child" href=#the-workflow-cannot-check-out-the-theme data-toc-link data-target=the-workflow-cannot-check-out-the-theme><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>The workflow cannot check out the theme</span>
+</a><a class="toc-link toc-link--child" href=#the-page-loads-without-styling data-toc-link data-target=the-page-loads-without-styling><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>The page loads without styling</span>
+</a><a class="toc-link toc-link--child" href=#github-pages-returns-404 data-toc-link data-target=github-pages-returns-404><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>GitHub Pages returns 404</span>
+</a><a class="toc-link toc-link--child" href=#a-deployment-does-not-create-a-new-public-commit data-toc-link data-target=a-deployment-does-not-create-a-new-public-commit><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>A deployment does not create a new public commit</span>
+</a><a class="toc-link toc-link--child" href=#a-draft-post-is-missing data-toc-link data-target=a-draft-post-is-missing><span class=toc-bar aria-hidden=true></span>
+<span class=toc-text>A draft post is missing</span></a></nav></aside></div></main></body></html>
